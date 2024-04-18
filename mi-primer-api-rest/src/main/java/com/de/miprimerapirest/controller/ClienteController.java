@@ -2,6 +2,7 @@ package com.de.miprimerapirest.controller;
 
 import com.de.miprimerapirest.model.dto.ClienteDto;
 import com.de.miprimerapirest.model.entity.Cliente;
+import com.de.miprimerapirest.model.payload.MensajeResponse;
 import com.de.miprimerapirest.service.ICliente;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -51,15 +52,16 @@ public class ClienteController {
     @DeleteMapping("cliente/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public ResponseEntity<?> delete(@PathVariable Integer id) {
-        Map<String, Object> response = new HashMap<>();
+
         try {
             Cliente clienteDelete = clienteService.findById(id);
             clienteService.delete(clienteDelete);
             return new ResponseEntity<>(clienteDelete,HttpStatus.NO_CONTENT);
         }catch (DataAccessException exDt){
-                    response.put("mensaje", exDt.getMessage());
-                    response.put("cliente", null);
-                    return new ResponseEntity<>(response,HttpStatus.INTERNAL_SERVER_ERROR);
+                    return new ResponseEntity<>(MensajeResponse.builder()
+                            .mensaje(exDt.getMessage())
+                            .object(null).build()
+                            ,HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
