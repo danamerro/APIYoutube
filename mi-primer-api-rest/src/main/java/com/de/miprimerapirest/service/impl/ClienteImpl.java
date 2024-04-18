@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-public abstract class ClienteImpl implements ICliente {
+public  class ClienteImpl implements ICliente {
 
     @Autowired
     private ClienteDao clienteDao;
@@ -33,6 +33,11 @@ public abstract class ClienteImpl implements ICliente {
     @Override
     public Cliente findById(Integer id) {
         return clienteDao.findById(id).orElse(null);
+    }
+
+    @Override
+    public void delete(Cliente cliente) {
+        
     }
 
     @Transactional
